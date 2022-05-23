@@ -1,2 +1,2 @@
-CREATE DATABASE employee;
-USE employee;
+CREATE DATABASE employee_db;
+USE employee_db;
