@@ -6,7 +6,7 @@ VALUES
 ('HR'),
 ('IT');
 
-INSERT INTO role (name, salary, department_id)
+INSERT INTO role (title, salary, department_id)
 VALUES
 ('SEO Specialist', 48000, 1),
 ('Marketing Analyst', 58000, 1),
@@ -31,13 +31,13 @@ VALUES
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES
-('Bill', 'Gates', 1, 3)
-('Tom', 'Cruise', 7, null)
-('Melanie', 'Safka', 13, 4)
-('Tom', 'Holland', 8, null)
-('Josh', 'Brolin', 15, 4)
-('James', 'Franco', 5, null)
-('Seth', 'Rogen', 11, 6)
-('Will', 'Smith', 9, null)
-('Aubrey', 'Graham', 7, 2)
-('Elon', 'Musk', 4, null);
+('Bill', 'Gates', 1, 3),
+('Tom', 'Cruise', 7, NULL),
+('Melanie', 'Safka', 13, 4),
+('Tom', 'Holland', 8, NULL),
+('Josh', 'Brolin', 15, 4),
+('James', 'Franco', 5, NULL),
+('Seth', 'Rogen', 11, 6),
+('Will', 'Smith', 9, NULL),
+('Aubrey', 'Graham', 7, 2),
+('Elon', 'Musk', 4, NULL);
