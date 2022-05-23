@@ -4,9 +4,9 @@ const cTable = require('console.table');
 const inquirer = require('inquirer');
 
 console.log(`
-╔═╗┌┬┐┌─┐┬  ┌─┐┬ ┬┌─┐┌─┐  ╔╦╗┬─┐┌─┐┌─┐┬┌─┌─┐┬─┐
-║╣ │││├─┘│  │ │└┬┘├┤ ├┤    ║ ├┬┘├─┤│  ├┴┐├┤ ├┬┘
-╚═╝┴ ┴┴  ┴─┘└─┘ ┴ └─┘└─┘   ╩ ┴└─┴ ┴└─┘┴ ┴└─┘┴└─
+                ╔═╗┌┬┐┌─┐┬  ┌─┐┬ ┬┌─┐┌─┐  ╔╦╗┬─┐┌─┐┌─┐┬┌─┌─┐┬─┐
+                ║╣ │││├─┘│  │ │└┬┘├┤ ├┤    ║ ├┬┘├─┤│  ├┴┐├┤ ├┬┘
+                ╚═╝┴ ┴┴  ┴─┘└─┘ ┴ └─┘└─┘   ╩ ┴└─┴ ┴└─┘┴ ┴└─┘┴└─
 `);
 
 const userPrompt = () => {
@@ -30,23 +30,47 @@ const userPrompt = () => {
         .then((choice) => {
             const { choices } = choice;
 
-            if (choices === 'view all departments') { }
-            
-            if (choices === 'view all roles') { }
-            
-            if (choices === 'view all employees') { }
-            
-            if (choices === 'add a department') { }
-            
-            if (choices === 'add a role') { }
-            
-            if (choices === 'add an employee') { }
-            
-            if (choices === 'update an employee role') { }
-            
-            if (choices === 'cancel') { }
+            if (choices === 'view all departments') {
+                viewDpts();
+            }
+            if (choices === 'view all roles') {
+                viewRoles();
+            }
+            if (choices === 'view all employees') {
+                viewEmps();
+            }
+            if (choices === 'add a department') {
+                addDpt();
+            }
+            if (choices === 'add a role') {
+                addRole();
+            }
+            if (choices === 'add an employee') {
+                addEmp();
+            }
+            if (choices === 'update an employee role') {
+                updateEmp();
+            }
+            if (choices === 'cancel') {
+                db.end(
+                    console.log(`
+                    ╔═╗┌─┐┌─┐  ┬ ┬┌─┐┬ ┬  ┬  ┌─┐┌┬┐┌─┐┬─┐┬
+                    ╚═╗├┤ ├┤   └┬┘│ ││ │  │  ├─┤ │ ├┤ ├┬┘│
+                    ╚═╝└─┘└─┘   ┴ └─┘└─┘  ┴─┘┴ ┴ ┴ └─┘┴└─o
+                    `)
+                );
+            };
+        });
+};
+
+viewDpts = () => {
+    const sql = `SELECT department.id AS id, department.name AS department FROM department`;
+    db.query(sql, (err, rows) => {
+        if (err) throw err;
+        console.table(rows);
+        userPrompt();
     })
-}
+};
 
 userPrompt();
 
