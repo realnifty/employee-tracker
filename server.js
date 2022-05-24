@@ -240,6 +240,64 @@ addEmp = () => {
     })
 }
 
+updateEmp = () => {
+    const employee_sql = `SELECT * FROM employee`;
+
+    db.query(employee_sql, (err, data) => {
+        if (err) throw err;
+
+        const employees = data.map(({ id, first_name, last_name }) => ({ name: `${first_name} ${last_name}`, value: id }));
+
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'employeeSelect',
+                message: 'Please select an employee to update.',
+                choices: employees
+            }
+        ])
+            .then(input => {
+                const employee = input.employeeSelect;
+                const params = [];
+
+                params.push(employee);
+
+                const role_sql = `SELECT * FROM role`;
+
+                db.query(role_sql, (err, data) => {
+                    if (err) throw err;
+                    const roles = data.map(({ id, title }) => ({ name: title, value: id }));
+
+                    inquirer.prompt([
+                        {
+                            type: 'list',
+                            name: 'updateRole',
+                            message: 'Please select a new role for this employee.',
+                            choices: roles
+                        }
+                    ])
+                        .then(input => {
+                            const newRole = input.updateRole;
+                            params.push(newRole);
+
+                            var employee = params[0]
+                            params[0] = newRole
+                            params[1] = employee
+
+                            const sql = `UPDATE employee SET role_id = ? WHERE id = ?`
+
+                            db.query(sql, params, (err, result) => {
+                                if (err) throw err;
+                                console.log('Employee updated.')
+
+                                viewEmps();
+                            })
+                    })
+                })
+        })
+    })
+}
+
 userPrompt();
 
 db.connect(err => {
