@@ -102,6 +102,25 @@ viewEmps = () => {
     });
 };
 
+addDpt = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'addDpt',
+            message: 'Please enter a new department name.'
+        }
+    ])
+        .then(input => {
+            const sql = `INSERT INTO department (name)
+                  VALUES (?)`;
+            db.query(sql, input.addDpt, (err, result) => {
+                if (err) throw err;
+                console.log(`Successfully added ${input.addDpt} to departments.`);
+                viewDpts();
+            })
+        });
+};
+
 userPrompt();
 
 db.connect(err => {
