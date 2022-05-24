@@ -3,13 +3,12 @@ const db = require('./db/connection');
 const cTable = require('console.table');
 const inquirer = require('inquirer');
 
-console.log(`
+const userPrompt = () => {
+    console.log(`
                 ╔═╗┌┬┐┌─┐┬  ┌─┐┬ ┬┌─┐┌─┐  ╔╦╗┬─┐┌─┐┌─┐┬┌─┌─┐┬─┐
                 ║╣ │││├─┘│  │ │└┬┘├┤ ├┤    ║ ├┬┘├─┤│  ├┴┐├┤ ├┬┘
                 ╚═╝┴ ┴┴  ┴─┘└─┘ ┴ └─┘└─┘   ╩ ┴└─┴ ┴└─┘┴ ┴└─┘┴└─
 `);
-
-const userPrompt = () => {
     inquirer.prompt([
         {
             type: 'list',
@@ -23,7 +22,7 @@ const userPrompt = () => {
                 'add a role',
                 'add an employee',
                 'update an employee role',
-                'cancel'
+                'exit'
             ]
         }
     ])
@@ -51,7 +50,7 @@ const userPrompt = () => {
             if (choices === 'update an employee role') {
                 updateEmp();
             }
-            if (choices === 'cancel') {
+            if (choices === 'exit') {
                 db.end(
                     console.log(`
                     ╔═╗┌─┐┌─┐  ┬ ┬┌─┐┬ ┬  ┬  ┌─┐┌┬┐┌─┐┬─┐┬
@@ -120,6 +119,56 @@ addDpt = () => {
             })
         });
 };
+
+addRole = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'addRole',
+            message: 'Please enter a new role.'
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'Please enter a salary for this role.'
+        }
+    ])
+        .then(input => {
+            const params = [input.addRole, input.salary];
+
+            const role_sql = `SELECT name, id FROM department`;
+
+            db.query(role_sql, (err, data) => {
+                if (err) throw err;
+
+                const dpt = data.map(({ name, id }) => ({ name: name, value: id }));
+
+                inquirer.prompt([
+                    {
+                        type: 'list',
+                        name: 'dpt',
+                        message: 'Please choose a department for this role.',
+                        choices: dpt
+                    }
+                ])
+                    .then(input => {
+                        const dpt = input.dpt;
+                        params.push(dpt);
+
+                        const sql = `INSERT INTO role (title, salary, department_id)
+                                    VALUES (?, ?, ?)`;
+
+                        db.query(sql, params, (err, result) => {
+                            if (err) throw err;
+                            console.log(`Added ${input.role} to roles!`);
+
+                            viewRoles();
+
+                        })
+                    })
+            })
+        })
+}
 
 userPrompt();
 
