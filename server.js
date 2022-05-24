@@ -116,7 +116,7 @@ addDpt = () => {
                 if (err) throw err;
                 console.log(`Successfully added ${input.addDpt} to departments.`);
                 viewDpts();
-            })
+            });
         });
 };
 
@@ -164,11 +164,11 @@ addRole = () => {
 
                             viewRoles();
 
-                        })
-                    })
-            })
-        })
-}
+                        });
+                    });
+            });
+        });
+};
 
 addEmp = () => {
     inquirer.prompt([
@@ -225,7 +225,7 @@ addEmp = () => {
                                     params.push(manager);
 
                                     const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id)
-                                    VALUES (?, ?, ?, ?)`
+                                    VALUES (?, ?, ?, ?)`;
 
                                     db.query(sql, params, (err, result) => {
                                         if (err) throw err;
@@ -233,12 +233,12 @@ addEmp = () => {
                                         console.log(`Employee added.`);
                                         viewEmps();
                                     })
-                            })
-                        })
-                })
-            })
-    })
-}
+                                });
+                        });
+                    });
+            });
+        });
+};
 
 updateEmp = () => {
     const employee_sql = `SELECT * FROM employee`;
@@ -291,12 +291,12 @@ updateEmp = () => {
                                 console.log('Employee updated.')
 
                                 viewEmps();
-                            })
-                    })
-                })
-        })
-    })
-}
+                            });
+                        });
+                });
+            });
+    });
+};
 
 userPrompt();
 
